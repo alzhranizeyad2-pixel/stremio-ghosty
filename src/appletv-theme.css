@@ -1,0 +1,82 @@
+/* ===== Apple TV theme for stremio-web ===== */
+/* Place in stremio-web/src/ and import it last from src/index.js:
+   import './appletv-theme.css';                                   */
+
+:root {
+    --primary-background-color: #000000;
+    --secondary-background-color: rgba(28, 28, 30, 0.72);
+    --primary-foreground-color: #f5f5f7;
+    --secondary-foreground-color: rgba(245, 245, 247, 0.6);
+    --primary-accent-color: #0a84ff;
+    --secondary-accent-color: #5e5ce6;
+    --modal-background-color: rgba(44, 44, 46, 0.85);
+    --overlay-color: rgba(255, 255, 255, 0.08);
+    --outer-glow: 0 0 0 transparent;
+    --atv-radius: 18px;
+    --atv-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html, body, #app {
+    background: radial-gradient(1200px 700px at 20% -10%, #1b1b2f 0%, #000 60%) fixed !important;
+    font-family: -apple-system, "SF Pro Display", "Inter", "Segoe UI", system-ui, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Thin, quiet scrollbars */
+* { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 8px; }
+
+/* Glass surfaces: nav bars, side bars, menus, modals */
+[class*="nav-bar"], [class*="horizontal-nav-bar"], [class*="vertical-nav-bar"],
+[class*="menu-container"], [class*="modal-container"], [class*="popup"],
+[class*="dropdown"] [class*="menu"] {
+    background: var(--secondary-background-color) !important;
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Poster cards: big rounded corners, lift + glow on focus/hover (Apple TV "parallax" feel) */
+[class*="meta-item"], [class*="poster-container"], [class*="poster-image"] {
+    border-radius: var(--atv-radius) !important;
+}
+[class*="meta-item-container"] {
+    transition: transform .35s var(--atv-ease), box-shadow .35s var(--atv-ease);
+    will-change: transform;
+}
+[class*="meta-item-container"]:hover,
+[class*="meta-item-container"]:focus-visible {
+    transform: scale(1.08) translateY(-4px);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, .55), 0 0 0 3px rgba(255, 255, 255, .85);
+    z-index: 5;
+}
+
+/* Buttons: pill shaped */
+[class*="button-container"] {
+    border-radius: 999px !important;
+    transition: transform .2s var(--atv-ease), background-color .2s;
+}
+[class*="button-container"]:hover { transform: scale(1.04); }
+[class*="button-container"]:active { transform: scale(.97); }
+
+/* Inputs / search */
+[class*="search-bar"], input[type="text"], input[type="search"] {
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, .1) !important;
+    border: 1px solid rgba(255, 255, 255, .12) !important;
+}
+
+/* Section titles */
+[class*="board-row"] [class*="title"], [class*="meta-row"] [class*="title"] {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/* Smooth focus ring everywhere */
+:focus-visible { outline: 3px solid rgba(255, 255, 255, .85) !important; outline-offset: 3px; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+}
