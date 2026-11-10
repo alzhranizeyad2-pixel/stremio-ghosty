@@ -1,8 +1,8 @@
 name: Deploy
 on:
-  push:
-    branches: [development, main]
   workflow_dispatch:
+  push:
+    branches: [development]
 permissions:
   contents: read
   pages: write
@@ -15,15 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6.1.0
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
-      - name: Install
-        run: |
-          if [ -f pnpm-lock.yaml ]; then npm i -g pnpm && pnpm install --frozen-lockfile; else npm install; fi
-      - name: Build
-        run: |
-          if [ -f pnpm-lock.yaml ]; then pnpm build; else npm run build; fi
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm build
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build
